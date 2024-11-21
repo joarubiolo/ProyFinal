@@ -35,7 +35,7 @@ with tab1:
             try:
                 lat = float(lat)
                 lon = float(lon)
-                fig = px.scatter_mapbox(dfRestaurantes, lat=lat, lon=lon, 
+                fig = px.scatter_mapbox(dfRestaurantes, lat='latitude', lon='longitude', 
                                         color='stars', hover_name='name', hover_data=['food', 'place','menu','service'],                                
                                         zoom=10, height=600)
                 fig.update_layout(
