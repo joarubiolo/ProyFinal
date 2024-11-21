@@ -6,31 +6,58 @@ from streamlit_folium import st_folium #Widget de Streamlit para mostrar los map
 from folium.plugins import MarkerCluster #Plugin para agrupar marcadores
 
 st.set_page_config(
-    page_title="Visor de Mapas en Streamlit",
+    page_title="Sentiment Analisys California",
     page_icon="🌐",  
     layout='wide',
     initial_sidebar_state="expanded"
 )
 
-st.header('Visor de Mapas en Streamlit')
+st.header('Informacion general y sentimental de Restaurantes')
 dfRestaurantes= pd.read_csv('df_ML.csv') # modificar ruta en github
 #dfRestaurantes['food']=dfRestaurantes['food'].fillna(0)
 #dfRestaurantes['service']=dfRestaurantes['service'].fillna(0)
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
 #dfRestaurantes['menu']=dfRestaurantes['menu'].fillna(0)
-location = [dfRestaurantes['latitude'].mean() , dfRestaurantes['longitude'].mean()]
+location = [27.9521519,-82.4608919]
 
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
-with tab1:    
+with tab1:
+    parUbi = st.checkbox('Ingresar coordenadas:')
+    if parUbi:
+        lat = st.text_input('ingrese la latitud')
+        lon = st.text_input('ingrese la longitud')
+        if lat and lon:
+            try:
+                lat = float(lat)
+                lon = float(lon)
+                fig = px.scatter_mapbox(dfRestaurantes, lat=lat, lon=lon, 
+                                        color='stars', hover_name='name', hover_data=['food', 'place','menu','service'],                                
+                                        zoom=10, height=600)
+            except ValueError:
+                st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")
     parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])        
-    parTamano = st.checkbox('Tamaño por cantidad de reviews')
-    if parTamano:
-        fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
-                                color='stars', hover_name='name',hover_data=['review_count','address'],
-                                zoom=10, size='review_count',height=600)
+    parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
+    if parCaract:
+        caract = st.selectbox('Elija la caracteristica', options=['servicio','lugar','menu','comida'])
+        if caract == 'servicio':
+            fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
+                                color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
+                                zoom=10, size='service',height=600)
+        if caract == 'lugar':
+            fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
+                                color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
+                                zoom=10, size='place',height=600)
+        if caract == 'menu':
+            fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
+                                color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
+                                zoom=10, size='menu',height=600)
+        if caract == 'comida':
+            fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
+                                color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
+                                zoom=10, size='food',height=600)
     else:
         fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
-                                color='stars', hover_name='name',hover_data=['review_count','address'],                                
+                                color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],                                
                                 zoom=10,height=600)
     fig.update_layout(mapbox_style=parMapa)
     st.plotly_chart(fig,use_container_width=True)
