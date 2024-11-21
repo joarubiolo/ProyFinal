@@ -58,8 +58,13 @@ with tab1:
         fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],                                
                                 zoom=10,height=600)
-    fig.update_layout(mapbox_style=parMapa)
-    st.plotly_chart(fig,use_container_width=True)
+    fig.update_layout(
+    mapbox_style=parMapa,
+    mapbox_center={"lat": 27.9521519, "lon": -82.4608919},  # Coordenadas iniciales
+    mapbox_zoom=10  # Nivel de zoom inicial
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 #with tab2:
 #    df = px.data.gapminder().query("year==2007")    
 #    fig = px.choropleth(df, locations="iso_alpha",
