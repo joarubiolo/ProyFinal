@@ -4,6 +4,7 @@ import plotly.express as px
 import folium #Librería de mapas en Python
 from streamlit_folium import st_folium #Widget de Streamlit para mostrar los mapas
 from folium.plugins import MarkerCluster #Plugin para agrupar marcadores
+from sklearn.preprocessing import MinMaxScaler
 
 st.set_page_config(
     page_title="Sentiment Analisys California",
@@ -14,6 +15,10 @@ st.set_page_config(
 
 st.header('Informacion general y sentimental de Restaurantes')
 dfRestaurantes= pd.read_csv('df_ML.csv') # modificar ruta en github
+scaler = MinMaxScaler(feature_range=(1, 5))  # Cambia el rango
+cols_to_fix = ['food', 'service', 'place', 'menu']
+dfRestaurantes[cols_to_fix] = scaler.fit_transform(dfRestaurantes[cols_to_fix])
+
 #dfRestaurantes['food']=dfRestaurantes['food'].fillna(0)
 #dfRestaurantes['service']=dfRestaurantes['service'].fillna(0)
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
