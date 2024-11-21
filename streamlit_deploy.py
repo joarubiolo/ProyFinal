@@ -38,12 +38,12 @@ with tab1:
     parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])        
     parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
     if parCaract:
-        caract = st.selectbox('Elija la caracteristica', options=['servicio','lugar','menu','comida'])
-        if caract == 'servicio':
+        caract = st.selectbox('Elija la caracteristica', options=['service','place','menu','food'])
+        if caract == 'service':
             fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
                                 zoom=10, size='service',height=600)
-        if caract == 'lugar':
+        if caract == 'place':
             fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
                                 zoom=10, size='place',height=600)
@@ -51,7 +51,7 @@ with tab1:
             fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
                                 zoom=10, size='menu',height=600)
-        if caract == 'comida':
+        if caract == 'food':
             fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],
                                 zoom=10, size='food',height=600)
