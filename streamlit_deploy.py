@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 st.header('Visor de Mapas en Streamlit')
-dfRestaurantes= pd.read_csv(r'C:\Users\rubio\Documents\SoyHenry\Proyecto Final\df_ML.csv') # modificar ruta en github
+dfRestaurantes= pd.read_csv('df_ML.csv') # modificar ruta en github
 #dfRestaurantes['food']=dfRestaurantes['food'].fillna(0)
 #dfRestaurantes['service']=dfRestaurantes['service'].fillna(0)
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
