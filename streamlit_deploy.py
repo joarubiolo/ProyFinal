@@ -29,8 +29,8 @@ tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 
 with tab1:
     parUbi = st.checkbox('Ingresar coordenadas:')
     if parUbi:
-        lat = st.text_input('ingrese la latitud')
-        lon = st.text_input('ingrese la longitud')
+        lat = st.text_input('ingrese la latitud', placeholder="Ej: 27.9521519")
+        lon = st.text_input('ingrese la longitud', placeholder="Ej: -82.4608919")
         if lat and lon:
             try:
                 lat = float(lat)
@@ -38,6 +38,11 @@ with tab1:
                 fig = px.scatter_mapbox(dfRestaurantes, lat=lat, lon=lon, 
                                         color='stars', hover_name='name', hover_data=['food', 'place','menu','service'],                                
                                         zoom=10, height=600)
+                fig.update_layout(
+                mapbox_style=parMapa,
+                mapbox_center={"lat": lat, "lon": lon},  # Usa las coordenadas ingresadas
+                mapbox_zoom=10  # Nivel de zoom inicial
+                )
             except ValueError:
                 st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")
     parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])    
