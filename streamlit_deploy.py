@@ -28,6 +28,7 @@ location = [27.9521519,-82.4608919]
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
 with tab1:
     parUbi = st.checkbox('Ingresar coordenadas:')
+    parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])
     if parUbi:
         lat = st.text_input('ingrese la latitud', placeholder="Ej: 27.9521519")
         lon = st.text_input('ingrese la longitud', placeholder="Ej: -82.4608919")
@@ -44,8 +45,7 @@ with tab1:
                 mapbox_zoom=10  # Nivel de zoom inicial
                 )
             except ValueError:
-                st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")
-    parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])    
+                st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")  
     
     parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
 
