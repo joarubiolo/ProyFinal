@@ -29,7 +29,7 @@ location = [27.9521519,-82.4608919]
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
 with tab1:
     parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])
-    parUbi = st.selectbox('Buscar por', options=['coordenadas','codigo postal','estado','ciudad'])
+    parUbi = st.selectbox('Buscar por', options=['coordenadas','codigo postal','estado'])
     if parUbi=='coordenadas':
         lat = st.text_input('ingrese la latitud', placeholder="Ej: 27.9521519")
         lon = st.text_input('ingrese la longitud', placeholder="Ej: -82.4608919")
