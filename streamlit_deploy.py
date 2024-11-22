@@ -24,8 +24,8 @@ dfRestaurantes[cols_to_fix] = scaler.fit_transform(dfRestaurantes[cols_to_fix])
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
 #dfRestaurantes['menu']=dfRestaurantes['menu'].fillna(0)
 location = [27.9521519,-82.4608919]
-stateslist = dfRestaurantes['state'].unique()
-citylist = dfRestaurantes['city'].unique()
+stateslist = list(dfRestaurantes['state'].unique())
+citylist = list(dfRestaurantes['city'].unique())
 
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
 with tab1:
