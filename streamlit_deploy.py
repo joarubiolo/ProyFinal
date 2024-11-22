@@ -130,7 +130,7 @@ with tab1:
         if not df_filtrado.empty:
             fig = px.scatter_mapbox(dfRestaurantes, lat='latitude', lon='longitude', 
                                         color='stars', hover_name='name', hover_data=['food', 'place', 'menu', 'service'],
-                                        zoom=10, size=valor, height=600)
+                                        zoom=10, size=str(valor), height=600)
         else:
             st.error("No se encontraron restaurantes con esos valores")
     else:
