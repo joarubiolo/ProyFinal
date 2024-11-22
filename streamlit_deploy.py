@@ -79,30 +79,31 @@ with tab1:
 
     elif parUbi=='state':
         estado = st.selectbox('seleccione un estado',options=['NV', 'LA', 'FL', 'PA', 'CA', 'TN', 'AB', 'MO', 'NJ', 'IL', 'IN', 'DE', 'AZ', 'ID', 'WA', 'CO','NoState'])
-        df_filtrado = dfRestaurantes[dfRestaurantes['state'] == estado]
-        if not df_filtrado.empty:
-            lat_central = df_filtrado['latitude'].mean()
-            lon_central = df_filtrado['longitude'].mean()
-    
-            # Crear el mapa centrado
-            fig = px.scatter_mapbox(
-                dfRestaurantes, 
-                lat='latitude', 
-                lon='longitude', 
-                color='stars', 
-                hover_name='name', 
-                hover_data=['food', 'place', 'menu', 'service'],
-                zoom=10, 
-                height=600
-            )
-            fig.update_layout(
-                mapbox_style="open-street-map",
-                mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
-                mapbox_zoom=12
-            )
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.error("No se encontraron restaurantes en ese estado.")
+        if estado:
+            df_filtrado = dfRestaurantes[dfRestaurantes['state'] == estado]
+            if not df_filtrado.empty:
+                lat_central = df_filtrado['latitude'].mean()
+                lon_central = df_filtrado['longitude'].mean()
+        
+                # Crear el mapa centrado
+                fig = px.scatter_mapbox(
+                    dfRestaurantes, 
+                    lat='latitude', 
+                    lon='longitude', 
+                    color='stars', 
+                    hover_name='name', 
+                    hover_data=['food', 'place', 'menu', 'service'],
+                    zoom=10, 
+                    height=600
+                )
+                fig.update_layout(
+                    mapbox_style="open-street-map",
+                    mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
+                    mapbox_zoom=12
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.error("No se encontraron restaurantes en ese estado.")
     
     parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
 
