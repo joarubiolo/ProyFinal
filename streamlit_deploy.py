@@ -78,7 +78,7 @@ with tab1:
             st.error("No se encontraron restaurantes con ese código postal.")
 
     elif parUbi=='state':
-        estado = st.selectbox('seleccione un estado',options=['NV', 'LA', 'FL', 'PA', 'CA', 'TN', 'AB', 'MO', 'NJ', 'IL', 'IN', 'DE', 'AZ', 'ID', 'WA', 'CO','NoState'])
+        estado = st.text_input('escriba las siglas de un estado',placeholder="Ej:NV,LA,FL,PA,CA,TN,AB,MO,NJ,IL,IN,DE,AZ,ID,WA,CO,NoState")
         if estado:
             df_filtrado = dfRestaurantes[dfRestaurantes['state'] == estado]
             if not df_filtrado.empty:
