@@ -49,7 +49,7 @@ with tab1:
                 st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")  
     
     elif parUbi=='codigo postal':
-        Cod = st.text_input("Ingrese un codigo postal", max_chars=4, placeholder="Ej: 1234")
+        Cod = st.text_input("Ingrese un codigo postal", placeholder="Ej: 12345")
         df_filtrado = dfRestaurantes[dfRestaurantes['postal_code'] == Cod]
 
         if not df_filtrado.empty:
