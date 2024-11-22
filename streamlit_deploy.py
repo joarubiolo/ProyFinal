@@ -19,7 +19,7 @@ scaler = MinMaxScaler(feature_range=(1, 5))  # Cambia el rango
 cols_to_fix = ['food', 'service', 'place', 'menu']
 dfRestaurantes[cols_to_fix] = scaler.fit_transform(dfRestaurantes[cols_to_fix])
 
-dfRestaurantes['food']=dfRestaurantes['state'].fillna('NoState')
+dfRestaurantes['state']=dfRestaurantes['state'].fillna('NoState')
 #dfRestaurantes['food']=dfRestaurantes['food'].fillna(0)
 #dfRestaurantes['service']=dfRestaurantes['service'].fillna(0)
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
