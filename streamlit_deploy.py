@@ -113,10 +113,26 @@ with tab1:
 
     if parCaract:
         caract = st.selectbox('Elija la característica', options=list(caract_map.keys()))
-        col = caract_map[caract]
-        fig = px.scatter_mapbox(dfRestaurantes, lat='latitude', lon='longitude', 
-                                color='stars', hover_name='name', hover_data=['food', 'place', 'menu', 'service'],
-                                zoom=10, size=col, height=600)
+        
+        valor = caract_map[caract]
+        
+        min_value = dfRestaurantes[valor].min()
+        max_value = dfRestaurantes[valor].max()
+
+        filtro = st.slider(
+            'Filtrar por calificación de la caracteristica seleccionada', 
+            min_value=float(min_value), 
+            max_value=float(max_value), 
+            value=(min_value, max_value)
+        )
+
+        df_filtrado = dfRestaurantes[(dfRestaurantes[valor] >= filtro[0]) & (dfRestaurantes[valor] <= filtro[1])]
+        if not df_filtrado.empty:
+            fig = px.scatter_mapbox(dfRestaurantes, lat='latitude', lon='longitude', 
+                                        color='stars', hover_name='name', hover_data=['food', 'place', 'menu', 'service'],
+                                        zoom=10, size=valor, height=600)
+        else:
+            st.error("No se encontraron restaurantes con esos valores")
     else:
         fig = px.scatter_mapbox(dfRestaurantes,lat='latitude',lon='longitude', 
                                 color='stars', hover_name='name',hover_data=['food', 'place','menu','service'],                                
