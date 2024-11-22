@@ -19,13 +19,12 @@ scaler = MinMaxScaler(feature_range=(1, 5))  # Cambia el rango
 cols_to_fix = ['food', 'service', 'place', 'menu']
 dfRestaurantes[cols_to_fix] = scaler.fit_transform(dfRestaurantes[cols_to_fix])
 
+dfRestaurantes['food']=dfRestaurantes['state'].fillna('NoState')
 #dfRestaurantes['food']=dfRestaurantes['food'].fillna(0)
 #dfRestaurantes['service']=dfRestaurantes['service'].fillna(0)
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
 #dfRestaurantes['menu']=dfRestaurantes['menu'].fillna(0)
 location = [27.9521519,-82.4608919]
-stateslist = list(dfRestaurantes['state'].unique())
-citylist = list(dfRestaurantes['city'].unique())
 
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
 with tab1:
@@ -79,7 +78,7 @@ with tab1:
             st.error("No se encontraron restaurantes con ese código postal.")
 
     elif parUbi=='state':
-        estado = st.selectbox('seleccione un estado',options=stateslist)
+        estado = st.selectbox('seleccione un estado',options=['NV', 'LA', 'FL', 'PA', 'CA', 'TN', 'AB', 'MO', 'NJ', 'IL', 'IN', 'DE', 'AZ', 'ID', 'WA', 'CO','NoState'])
         df_filtrado = dfRestaurantes[dfRestaurantes['state'] == estado]
         if not df_filtrado.empty:
             lat_central = df_filtrado['latitude'].mean()
@@ -105,34 +104,6 @@ with tab1:
         else:
             st.error("No se encontraron restaurantes en ese estado.")
     
-    elif parUbi=='city':
-        ciudad = st.selectbox('seleccione una ciudad',options=citylist)
-        df_filtrado = dfRestaurantes[dfRestaurantes['city'] == ciudad]
-        if not df_filtrado.empty:
-            lat_central = df_filtrado['latitude'].mean()
-            lon_central = df_filtrado['longitude'].mean()
-    
-            # Crear el mapa centrado
-            fig = px.scatter_mapbox(
-                dfRestaurantes, 
-                lat='latitude', 
-                lon='longitude', 
-                color='stars', 
-                hover_name='name', 
-                hover_data=['food', 'place', 'menu', 'service'],
-                zoom=10, 
-                height=600
-            )
-            fig.update_layout(
-                mapbox_style="open-street-map",
-                mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
-                mapbox_zoom=12
-            )
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.error("No se encontraron restaurantes en esa ciudad.")
-        
-            
     parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
 
     dfRestaurantes[['food', 'service', 'place', 'menu']] = dfRestaurantes[['food', 'service', 'place', 'menu']].fillna(0)
