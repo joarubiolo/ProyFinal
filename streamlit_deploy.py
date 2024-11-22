@@ -24,12 +24,14 @@ dfRestaurantes[cols_to_fix] = scaler.fit_transform(dfRestaurantes[cols_to_fix])
 #dfRestaurantes['place']=dfRestaurantes['place'].fillna(0)
 #dfRestaurantes['menu']=dfRestaurantes['menu'].fillna(0)
 location = [27.9521519,-82.4608919]
+stateslist = dfRestaurantes['state'].unique()
+citylist = dfRestaurantes['city'].unique()
 
 tab1,tab3,tab4=st.tabs(['Mapa Plotly','Mapa Folium' ,'Datos']) # ventanas #tab2 = 'Mapa Choropleth'
 with tab1:
-    parUbi = st.checkbox('Ingresar coordenadas:')
     parMapa = st.selectbox('Tipo Mapa',options=["open-street-map", "carto-positron","carto-darkmatter"])
-    if parUbi:
+    parUbi = st.selectbox('Buscar por', options=['coordenadas','codigo postal','estado','ciudad'])
+    if parUbi=='coordenadas':
         lat = st.text_input('ingrese la latitud', placeholder="Ej: 27.9521519")
         lon = st.text_input('ingrese la longitud', placeholder="Ej: -82.4608919")
         if lat and lon:
@@ -47,6 +49,90 @@ with tab1:
             except ValueError:
                 st.error("Por favor, ingrese valores numéricos para la latitud y longitud.")  
     
+    elif parUbi=='codigo postal':
+        Cod = st.text_input("Ingrese un codigo postal", max_chars=4, placeholder="Ej: 1234")
+        df_filtrado = dfRestaurantes[dfRestaurantes['postal_code'] == Cod]
+
+        if not df_filtrado.empty:
+            # Obtener las coordenadas promedio del código postal
+            lat_central = df_filtrado['latitude'].mean()
+            lon_central = df_filtrado['longitude'].mean()
+    
+            # Crear el mapa centrado
+            fig = px.scatter_mapbox(
+                dfRestaurantes, 
+                lat='latitude', 
+                lon='longitude', 
+                color='stars', 
+                hover_name='name', 
+                hover_data=['food', 'place', 'menu', 'service'],
+                zoom=10, 
+                height=600
+            )
+            fig.update_layout(
+                mapbox_style="open-street-map",
+                mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
+                mapbox_zoom=12
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.error("No se encontraron restaurantes con ese código postal.")
+
+    elif parUbi=='state':
+        estado = st.selectbox('seleccione un estado',options=stateslist)
+        df_filtrado = dfRestaurantes[dfRestaurantes['state'] == estado]
+        if not df_filtrado.empty:
+            lat_central = df_filtrado['latitude'].mean()
+            lon_central = df_filtrado['longitude'].mean()
+    
+            # Crear el mapa centrado
+            fig = px.scatter_mapbox(
+                dfRestaurantes, 
+                lat='latitude', 
+                lon='longitude', 
+                color='stars', 
+                hover_name='name', 
+                hover_data=['food', 'place', 'menu', 'service'],
+                zoom=10, 
+                height=600
+            )
+            fig.update_layout(
+                mapbox_style="open-street-map",
+                mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
+                mapbox_zoom=12
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.error("No se encontraron restaurantes en ese estado.")
+    
+    elif parUbi=='city':
+        ciudad = st.selectbox('seleccione una ciudad',options=citylist)
+        df_filtrado = dfRestaurantes[dfRestaurantes['city'] == ciudad]
+        if not df_filtrado.empty:
+            lat_central = df_filtrado['latitude'].mean()
+            lon_central = df_filtrado['longitude'].mean()
+    
+            # Crear el mapa centrado
+            fig = px.scatter_mapbox(
+                dfRestaurantes, 
+                lat='latitude', 
+                lon='longitude', 
+                color='stars', 
+                hover_name='name', 
+                hover_data=['food', 'place', 'menu', 'service'],
+                zoom=10, 
+                height=600
+            )
+            fig.update_layout(
+                mapbox_style="open-street-map",
+                mapbox_center={"lat": lat_central, "lon": lon_central},  # Centrar en el código postal
+                mapbox_zoom=12
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.error("No se encontraron restaurantes en esa ciudad.")
+        
+            
     parCaract = st.checkbox('Tamaño por caracteristica de restaurante')
 
     dfRestaurantes[['food', 'service', 'place', 'menu']] = dfRestaurantes[['food', 'service', 'place', 'menu']].fillna(0)
@@ -65,7 +151,7 @@ with tab1:
                                 zoom=10,height=600)
     fig.update_layout(
     mapbox_style=parMapa,
-    mapbox_center={"lat": 27.9521519, "lon": -82.4608919},  # Coordenadas iniciales
+    mapbox_center={"lat": location[0], "lon": location[1]},  # Coordenadas iniciales
     mapbox_zoom=10  # Nivel de zoom inicial
     )
 
