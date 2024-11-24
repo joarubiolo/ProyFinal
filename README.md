@@ -33,7 +33,7 @@
 - [María José Grecco](https://github.com/mpaezgrecco) - *Data Analist*
 - [Esteban Parron](https://github.com/systemeap) - *Data Analist*
 - [Santiago Mejía](https://github.com/SantiagoMejiaGuerra) - *Data Analist*
-- [Joaquín Rubiolo](https://github.com/joarubiolo) - *Data Scientist*
+- [Joaquín Rubiolo](https://github.com/joarubiolo) - *Data Scientist/ML engineer*
 - [Luis Gonzalez](https://github.com/lucho28) - *Data Engineer*
 
 ## **Introducción a StarSight**
